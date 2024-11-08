@@ -374,7 +374,7 @@ inner join curso_escolar CE group by 1;
 -- El resultado mostrará cinco columnas: id, nombre, primer apellido, segundo apellido
 -- y número de asignaturas. El resultado estará ordenado de mayor a menor por el número de asignaturas.
 
-select P.id, P.nombre, p.apellido1, P.apellido2,  count(A.nombre)  from profesor P
-right join asignatura A on P.id = A.id_profesor group by 1,2,3,4 order by 5 desc;
+select P.id, P.nombre, p.apellido1, P.apellido2,  count(A.nombre)  from profesor P 
+left join asignatura A on P.id = A.id_profesor group by 1,2,3,4 order by 5 desc;
 
 
