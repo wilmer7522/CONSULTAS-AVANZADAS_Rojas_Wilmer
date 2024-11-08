@@ -338,5 +338,43 @@ left join profesor P on D.id = P.id_departamento group by 1;
 -- Estos grados también tienen que aparecer en el listado.
 -- El resultado deberá estar ordenado de mayor a menor por el número de asignaturas.
 
-select * from grado;
+select G.nombre, count(A.nombre) as Cantidad_asignaturas from grado G
+left join asignatura A on G.id = A.id_grado group by 1 order by 2 desc ;
 select * from asignatura;
+
+
+-- Devuelve un listado con el nombre de todos los grados existentes en la base de datos
+-- y el número de asignaturas que tiene cada uno, de los grados que tengan más de 40 asignaturas asociadas.
+
+select G.nombre, count(A.id) from grado G
+inner join asignatura A on G.id = A.id_grado  group by 1 having count(2)  > 40;
+
+
+-- Devuelve un listado que muestre el nombre de los grados y la suma del número total de créditos que hay para cada tipo de asignatura.
+-- El resultado debe tener tres columnas: nombre del grado, tipo de asignatura
+--  y la suma de los créditos de todas las asignaturas que hay de ese tipo.
+-- Ordene el resultado de mayor a menor por el número total de crédidos.
+
+select G.nombre as Nombre_Grado, A.tipo as Tipo_Asignatura, sum(A.creditos) as Suma_Creditos from asignatura A
+inner join grado G on G.id = A.id_grado group by 1,2 order by 3 desc;
+
+
+-- Devuelve un listado que muestre cuántos alumnos se han matriculado de alguna asignatura en cada uno de los cursos escolares.
+--  El resultado deberá mostrar dos columnas,
+-- una columna con el año de inicio del curso escolar
+--  y otra con el número de alumnos matriculados.
+
+select CE.anyo_inicio as Año_inicio, count(Al.id) as Cantidad_Alumnos from alumno Al
+inner join curso_escolar CE group by 1;
+
+
+
+-- Devuelve un listado con el número de asignaturas que imparte cada profesor.
+-- El listado debe tener en cuenta aquellos profesores que no imparten ninguna asignatura.
+-- El resultado mostrará cinco columnas: id, nombre, primer apellido, segundo apellido
+-- y número de asignaturas. El resultado estará ordenado de mayor a menor por el número de asignaturas.
+
+select P.id, P.nombre, p.apellido1, P.apellido2,  count(A.nombre)  from profesor P
+right join asignatura A on P.id = A.id_profesor group by 1,2,3,4 order by 5 desc;
+
+
