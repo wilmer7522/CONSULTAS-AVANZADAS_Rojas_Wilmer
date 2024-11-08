@@ -378,3 +378,61 @@ select P.id, P.nombre, p.apellido1, P.apellido2,  count(A.nombre)  from profesor
 left join asignatura A on P.id = A.id_profesor group by 1,2,3,4 order by 5 desc;
 
 
+
+-- Devuelve todos los datos del alumno más joven.
+select * from alumno order by fecha_nacimiento desc limit 1;
+select * from alumno;
+
+-- Devuelve un listado con los profesores que no están asociados a un departamento.
+select * from profesor P
+join departamento D on P.id_departamento = D.id where P.id is null;
+
+-- Devuelve un listado con los departamentos que no tienen profesores asociados.
+
+select * from departamento D 
+left join profesor P on D.id = P.id_departamento where P.id_departamento is null;
+
+-- Devuelve un listado con los profesores que tienen un departamento asociado y que no imparten ninguna asignatura.
+
+select P.*, A.nombre as Asignatura from profesor P
+left join asignatura A on A.id_profesor = P.id where A.id_profesor is null;
+
+
+-- Devuelve un listado con las asignaturas que no tienen un profesor asignado.
+select * from  asignatura A 
+ where A.id_profesor is null;
+
+-- Devuelve un listado con todos los departamentos que no han impartido asignaturas en ningún curso escolar.
+select * from departamento D
+join curso_escolar CE;
+
+
+-- Devuelve un listado con el nombre de todos los departamentos que tienen profesores que imparten alguna asignatura en el Grado en Ingeniería Informática (Plan 2015).
+
+select distinct P.id_departamento from profesor P
+join asignatura A on P.id = A.id_profesor 
+join grado G on A.id_grado = G.id where G.nombre = 'Grado en Ingeniería Informática (Plan 2015)';
+
+select * from grado;
+select * from asignatura;
+select * from departamento;
+
+-- Devuelve un listado con los nombres de todos los profesores y los departamentos que tienen vinculados.
+-- El listado también debe mostrar aquellos profesores que no tienen ningún departamento asociado.
+-- El listado debe devolver cuatro columnas, nombre del departamento, primer apellido, segundo apellido y nombre del profesor.
+-- El resultado estará ordenado alfabéticamente de menor a mayor por el nombre del departamento, apellidos y el nombre.
+
+-- Devuelve un listado con los profesores que no están asociados a un departamento.
+
+-- Devuelve un listado con los departamentos que no tienen profesores asociados.
+
+
+-- Devuelve un listado con los profesores que no imparten ninguna asignatura.
+
+
+-- Devuelve un listado con las asignaturas que no tienen un profesor asignado.
+
+
+
+-- Devuelve un listado con todos los departamentos que tienen alguna asignatura que no se haya impartido en ningún curso escolar.
+-- El resultado debe mostrar el nombre del departamento y el nombre de la asignatura que no se haya impartido nunca.
