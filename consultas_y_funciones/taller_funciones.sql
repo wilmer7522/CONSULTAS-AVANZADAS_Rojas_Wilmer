@@ -154,11 +154,44 @@ select nombre, gastos, presupuesto from departamento where gastos < presupuesto;
 
 /*29. Devuelve una lista con el nombre de los departamentos, gastos y presupuesto, de aquellos departamentos donde los gastos sean iguales al
 presupuesto del que disponen.*/
+select nombre, gastos, presupuesto from departamento where gastos = presupuesto;
+
 -- 30. Lista todos los datos de los empleados cuyo segundo apellido sea NULL.
+select * from empleado where apellido2 is null;
 -- 31. Lista todos los datos de los empleados cuyo segundo apellido no sea NULL.
+select * from empleado where apellido2  is not null;
+
 -- 32. Lista todos los datos de los empleados cuyo segundo apellido sea López.
+select * from empleado where apellido2 = 'Lopez';
+
 -- 33. Lista todos los datos de los empleados cuyo segundo apellido sea Díaz o Moreno. Sin utilizar el operador IN.
--- 34. Lista todos los datos de los empleados cuyo segundo apellido
--- sea Díaz o Moreno. Utilizando el operador IN.
+select * from empleado where apellido2 = 'Díaz' or apellido2 = 'Moreno';
+
+-- 34. Lista todos los datos de los empleados cuyo segundo apellido sea Díaz o Moreno. Utilizando el operador IN.
+select * from empleado where apellido2 in ('Díaz', 'Moreno');
+
 -- 35. Lista los nombres, apellidos y nif de los empleados que trabajan en el departamento 3.
+select nombre as Nombre, apellido1 as Primer_Apellido, apellido2 as Segundo_Apellido, nif from empleado where id_departamento = 3;
+
 -- 36. Lista los nombres, apellidos y nif de los empleados que trabajan en los departamentos 2, 4 o 5.
+select id_departamento,nombre as Nombre, apellido1 as Primer_Apellido, apellido2 as Segundo_Apellido, nif from empleado where id_departamento = 2 or id_departamento = 4 or id_departamento = 5 ;
+select id_departamento,nombre as Nombre, apellido1 as Primer_Apellido, apellido2 as Segundo_Apellido, nif from empleado where id_departamento in(2,4,5);
+
+-- Consultas multitabla (Composición interna)
+
+-- 1. Devuelve un listado con los empleados y los datos de los departamentos donde trabaja cada uno.
+select * from empleado E
+join departamento D on E.id_departamento = D.id;
+/* 2. Devuelve un listado con los empleados y los datos de los departamentos donde trabaja cada uno. Ordena el resultado, en primer lugar por el nombre
+ del departamento (en orden alfabético) y en segundo lugar por los apellidos y el nombre de los empleados.*/
+ select D.nombre, E.apellido1, E.apellido2, E.nombre from empleado E
+join departamento D on E.id_departamento = D.id order by 1,2,3,4 desc ;
+ 
+-- 3. Devuelve un listado con el identificador y el nombre del departamento, solamente de aquellos departamentos que tienen empleados.
+
+
+/* 4. Devuelve un listado con el identificador, el nombre del departamento y el valor del presupuesto actual del que dispone, solamente de aquellos
+departamentos que tienen empleados. El valor del presupuesto actual lo puede calcular restando al valor del presupuesto inicial
+(columna presupuesto) el valor de los gastos que ha generado (columna gastos).*/
+
+-- 5. Devuelve el nombre del departamento donde trabaja el empleado que tiene el nif 38382980M.
