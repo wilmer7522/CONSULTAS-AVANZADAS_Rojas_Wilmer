@@ -79,6 +79,8 @@ select id, substring(nif,1, 8), substring(nif, 9,1) from empleado;
 select id, REGEXP_REPLACE(nif,'[^A-Z]','') as Letras,
 REGEXP_REPLACE(nif,'[^0-9]','') as codigo from empleado;
 
+select E.id, left(E.nif,8) as 'Digito', right(E.nif,1) as 'Letra' from empleado E;
+
 -- 11. Lista el nombre de cada departamento y el valor del presupuesto actual del que dispone. Para calcular este dato tendrá que restar al valor del
 -- presupuesto inicial (columna presupuesto) los gastos que se han generado (columna gastos). Tenga en cuenta que en algunos casos pueden existir
 -- valores negativos. Utilice un alias apropiado para la nueva columna columna que está calculando.
