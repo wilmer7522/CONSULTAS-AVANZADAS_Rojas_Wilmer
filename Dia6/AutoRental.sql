@@ -85,8 +85,16 @@ foreign key (id_sucursal_salida) references sucursales (id),
 foreign key (id_sucursal_llegada) references sucursales (id),
 foreign key (id_cliente) references clientes (id),
 foreign key (id_empleado) references empleados (id),
-foreign key (id_descuento) references descuentos (id)
+foreign key (id_descuento) references descuentos (id),
+foreign key (id_vehiculo) references vehiculos (id)
 );
+
+create table retraso(
+id int primary key,
+dias_retraso int null,
+porcentaje_dias int null,
+id_alquiler int,
+foreign key (id_alquiler) references alquileres (id));
 
 INSERT INTO clientes (id, cedula, nombre1, nombre2, apellido1, apellido2, ciudad_residencia, direccion, celular, correo) VALUES
 (1, '1012345678', 'Carlos', 'Andrés', 'Rodríguez', 'Pérez', 'Bogotá', 'Calle 45A #12-30', '3005129876', 'carlos.rodriguez@hotmail.com'),
@@ -625,21 +633,246 @@ INSERT INTO alquileres (id, alquiler_semana, alquiler_dia, id_sucursal_salida, f
 (99, 740000, 132000, 4, '2024-07-31', 1, '2024-08-07', '2024-08-06', 99, 99, 99, 890000, 880000, 59),
 (100, 760000, 140000, 5, '2024-08-02', 2, '2024-08-09', NULL, 100, 100, 100, 910000, 900000, 60);
 
+INSERT INTO retraso (id, dias_retraso, porcentaje_dias, id_alquiler) VALUES
+(1, 2, 10, 1),
+(2, NULL, NULL, 2),
+(3, 1, 5, 3),
+(4, NULL, NULL, 4),
+(5, 3, 15, 5),
+(6, 2, 10, 6),
+(7, NULL, NULL, 7),
+(8, 0, 0, 8),
+(9, NULL, NULL, 9),
+(10, 5, 25, 10),
+(11, NULL, NULL, 11),
+(12, 4, 20, 12),
+(13, NULL, NULL, 13),
+(14, 1, 5, 14),
+(15, NULL, NULL, 15),
+(16, 3, 15, 16),
+(17, NULL, NULL, 17),
+(18, 0, 0, 18),
+(19, 6, 30, 19),
+(20, NULL, NULL, 20),
+(21, 2, 10, 21),
+(22, NULL, NULL, 22),
+(23, 4, 20, 23),
+(24, NULL, NULL, 24),
+(25, 1, 5, 25),
+(26, NULL, NULL, 26),
+(27, 5, 25, 27),
+(28, NULL, NULL, 28),
+(29, 3, 15, 29),
+(30, NULL, NULL, 30),
+(31, 0, 0, 31),
+(32, NULL, NULL, 32),
+(33, 2, 10, 33),
+(34, NULL, NULL, 34),
+(35, 4, 20, 35),
+(36, NULL, NULL, 36),
+(37, 1, 5, 37),
+(38, NULL, NULL, 38),
+(39, 3, 15, 39),
+(40, NULL, NULL, 40),
+(41, 6, 30, 41),
+(42, NULL, NULL, 42),
+(43, 0, 0, 43),
+(44, NULL, NULL, 44),
+(45, 5, 25, 45),
+(46, NULL, NULL, 46),
+(47, 2, 10, 47),
+(48, NULL, NULL, 48),
+(49, 4, 20, 49),
+(50, NULL, NULL, 50),
+(51, 1, 5, 51),
+(52, NULL, NULL, 52),
+(53, 3, 15, 53),
+(54, NULL, NULL, 54),
+(55, 6, 30, 55),
+(56, NULL, NULL, 56),
+(57, 0, 0, 57),
+(58, NULL, NULL, 58),
+(59, 2, 10, 59),
+(60, NULL, NULL, 60),
+(61, 4, 20, 61),
+(62, NULL, NULL, 62),
+(63, 1, 5, 63),
+(64, NULL, NULL, 64),
+(65, 3, 15, 65),
+(66, NULL, NULL, 66),
+(67, 5, 25, 67),
+(68, NULL, NULL, 68),
+(69, 2, 10, 69),
+(70, NULL, NULL, 70),
+(71, 4, 20, 71),
+(72, NULL, NULL, 72),
+(73, 1, 5, 73),
+(74, NULL, NULL, 74),
+(75, 3, 15, 75),
+(76, NULL, NULL, 76),
+(77, 6, 30, 77),
+(78, NULL, NULL, 78),
+(79, 0, 0, 79),
+(80, NULL, NULL, 80),
+(81, 5, 25, 81),
+(82, NULL, NULL, 82),
+(83, 2, 10, 83),
+(84, NULL, NULL, 84),
+(85, 4, 20, 85),
+(86, NULL, NULL, 86),
+(87, 1, 5, 87),
+(88, NULL, NULL, 88),
+(89, 3, 15, 89),
+(90, NULL, NULL, 90),
+(91, 6, 30, 91),
+(92, NULL, NULL, 92),
+(93, 0, 0, 93),
+(94, NULL, NULL, 94),
+(95, 2, 10, 95),
+(96, NULL, NULL, 96),
+(97, 4, 20, 97),
+(98, NULL, NULL, 98),
+(99, 1, 5, 99),
+(100, NULL, NULL, 100);
 
--- ver todos los clientes
+
+
+-- 1 ver todos los clientes
 select * from clientes;
 
--- ver los clientes que no tienen segundo nombre
+-- 2 ver los clientes que no tienen segundo nombre
 select * from clientes where nombre2 is null;
 
--- ver los clientes que solo tienen primer apellido
+-- 3 ver los clientes que solo tienen primer apellido
 select * from clientes where nombre1 is not null;
 
--- contar cuantos clientes hay en la ciudad de Bogota
+-- 4 contar cuantos clientes hay en la ciudad de Bogota
 select distinct count(*) from clientes where ciudad_residencia = 'Bogota';
 
 
+-- 5 clientes con al menos un dia de retraso
+select c.nombre1, c.nombre2, c.apellido1, c.apellido2, a.fecha_salida, r.dias_retraso
+from clientes c
+join alquileres a ON c.id = a.id_cliente
+join retraso r ON a.id = r.id_alquiler
+where r.dias_retraso >=1;
+
+-- 6 empleados que pertenecen a la sucursal 'Medellin'
+select e.nombre1, e.nombre2, e.apellido1, e.apellido2, s.ciudad
+from empleados e
+join sucursales s ON e.id_sucursal = s.id
+where s.ciudad = 'Medellín';
 
 
+-- 7 los vehículos que tienen un descuento del 20%.
+select v.placa, v.referencia, v.modelo, t.tipo_vehiculo, d.porcentaje_descuento
+from vehiculos v
+join tipo_vehiculo t ON v.id_tipo_vehiculo = t.id
+join descuentos d ON t.id_descuento = d.id
+where d.porcentaje_descuento = 20;
+
+-- 8 vehiculos de color Rojo
+select v.placa, v.modelo, v.color
+from vehiculos v
+where v.color = 'Rojo';
+
+
+-- 9 cantidad de alquilesres por cliente
+select c.nombre1, c.apellido1, COUNT(a.id) AS total_alquileres
+from clientes c
+join alquileres a ON c.id = a.id_cliente
+group by c.id;
+
+
+-- 10 vehiculos disponibles en la sucursal Bogota
+select v.placa, v.modelo, v.color, s.ciudad
+from vehiculos v
+join alquileres a ON v.id = a.id_vehiculo
+join sucursales s ON a.id_sucursal_salida = s.id
+where s.ciudad = 'Bogotá';
+
+-- 11 clientes sin dias de retrasos
+SELECT c.nombre1, c.nombre2, c.apellido1, c.apellido2
+FROM clientes c
+LEFT JOIN alquileres a ON c.id = a.id_cliente
+LEFT JOIN retraso r ON a.id = r.id_alquiler
+WHERE r.dias_retraso IS NULL;
+
+-- 12 ver descuento aplicado para las camionetas
+SELECT v.modelo, v.color, d.porcentaje_descuento
+FROM vehiculos v
+JOIN tipo_vehiculo t ON v.id_tipo_vehiculo = t.id
+JOIN descuentos d ON t.id_descuento = d.id
+WHERE t.tipo_vehiculo = 'Camioneta';
+
+
+-- 13 ver descuentos para todos los tipos de vehiculos ordenados por porcentaje de menos a mayor
+SELECT v.modelo, v.color, d.porcentaje_descuento
+FROM vehiculos v
+JOIN tipo_vehiculo t ON v.id_tipo_vehiculo = t.id
+JOIN descuentos d ON t.id_descuento = d.id order by 3 asc;
+
+-- 14 contar cuantos vehiculos tienen 4 puertas
+select count(*) from vehiculos where puertas = 4;
+
+-- 15 cuantos tipos de descuento hay en los vehiculos ordenado de mayor a menor
+select distinct porcentaje_descuento from descuentos order by 1 desc;
+
+
+-- 16 vehiculo que ha alquilado un cliente con id 10
+select c.id, c.nombre1, v.* from vehiculos v
+join alquileres a on v.id = a.id_vehiculo
+join clientes c on c.id  = a.id_cliente where c.id = 10;
+
+
+-- 1 funcion para contar la cantidad de clientes existentes
+delimiter //
+create function contar_clientes()
+returns int deterministic
+BEGIN
+    DECLARE total INT;
+    SELECT COUNT(*) INTO total FROM clientes;
+    RETURN total;
+END //
+delimiter ;
+
+select contar_clientes() as clientes;
+
+
+-- 2 funcion para mostrar vehiculos de color verde
+delimiter //
+create function contar_vehiculos_verdes()
+RETURNS INT deterministic
+BEGIN
+    DECLARE verde INT;
+    SELECT COUNT(*) INTO verde FROM vehiculos where color = 'Verde';
+    RETURN verde;
+END //
+delimiter ;
+
+select contar_vehiculos_verdes() as color;
+
+
+
+-- 3 funcion para determinar el descuento total a un cliente
+delimiter //
+create function calcular_descuento_cliente(cliente_id int)
+returns int deterministic
+begin
+    declare descuento_total INT ;
+    
+    
+    SELECT SUM(d.porcentaje_descuento)
+    INTO descuento_total
+    FROM alquileres a
+    JOIN tipo_vehiculo t ON a.id_vehiculo = t.id
+    JOIN descuentos d ON t.id_descuento = d.id
+    WHERE a.id_cliente = cliente_id;
+    
+    RETURN descuento_total;
+END //
+delimiter ;
+
+select calcular_descuento_cliente(10) AS descuento_total_cliente;
 
 
