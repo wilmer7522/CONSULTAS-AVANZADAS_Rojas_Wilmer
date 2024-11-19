@@ -824,6 +824,41 @@ select c.id, c.nombre1, v.* from vehiculos v
 join alquileres a on v.id = a.id_vehiculo
 join clientes c on c.id  = a.id_cliente where c.id = 10;
 
+-- 17 empleados asignados a clientes con apellido Rodriguez
+select e.*, c.* from empleados e
+join alquileres a on e.id = a.id_empleado
+join clientes c on c.id = a.id_cliente where c.apellido1 = 'Rodriguez' ;
+
+-- 18 clientes con alquileres entre 500000 y 800000
+select c.*, a.valor_pagado from clientes c
+join alquileres a on c.id = a.id_cliente where a.valor_pagado between 500000 and 800000;
+
+-- 19 empleados con apellidos Perez que trabajan en la sucursal Cali
+select e.* from empleados e
+join alquileres a on e.id = a.id_empleado
+join sucursales s on s.id = a.id_sucursal_salida where e.apellido1 = 'Perez' and s.ciudad = 'Cali';
+
+-- 20 cliente con numero de cedula  1012456789
+select * from clientes where cedula = 1012456789;
+
+-- 21 clientes que no tienen segundo nombre
+select * from clientes where nombre2 is null;
+
+-- 22 contar los clientes que tengas el mismo nombre Carlos
+select count(*) from clientes where nombre1 = 'Carlos';
+
+-- 23 ver la sucursal del empleado con el id 85
+select e.*, s.ciudad from empleados e
+left join alquileres a on e.id = a.id_empleado
+join sucursales s on s.id = a.id_sucursal_salida where e.id = 85;
+
+-- 24 ordenar por orden alfadetico los clientes por el primer nombre
+select nombre1, nombre2, apellido1, apellido2 from clientes order by 1 asc;
+
+-- 25 listar cantidad de empleados por sucursales
+select distinct s.ciudad,  count(e.id)  from empleados e
+join alquileres a on e.id = a.id_empleado
+join sucursales s on s.id = a.id_sucursal_salida group by 1;
 
 -- 1 funcion para contar la cantidad de clientes existentes
 delimiter //
@@ -854,7 +889,7 @@ select contar_vehiculos_verdes() as color;
 
 
 
--- 3 funcion para determinar el descuento total a un cliente
+-- 3 funcion para determinar el porcentaje de descuento total a un cliente
 delimiter //
 create function calcular_descuento_cliente(cliente_id int)
 returns int deterministic
@@ -875,4 +910,39 @@ delimiter ;
 
 select calcular_descuento_cliente(10) AS descuento_total_cliente;
 
+-- 4 funcion para sumar el total de todas los alquileres
+delimiter //
+create function valor_total_pagado()
+returns int deterministic
+begin
+    declare valor_total INT ;
+    
+    
+    SELECT SUM(a.valor_pagado)
+    INTO valor_total
+    FROM alquileres a
+    WHERE a.valor_pagado;
+    
+    RETURN valor_total;
+END //
+delimiter ;
 
+select valor_total_pagado() as valor_total_pagado;
+
+-- 5 diferencia de valor cotizado y valor pagado
+delimiter //
+create function diferencia_total_pagada(valor_cotizado int, valor_pagado int)
+returns int deterministic
+begin
+    declare diferencia INT ;
+    
+    
+    set diferencia = valor_cotizado - valor_pagado;
+   
+    
+    RETURN diferencia;
+END //
+delimiter ;
+
+
+select diferencia_total_pagada(valor_cotizado, valor_pagado) as diferencia_pagada from alquileres;
