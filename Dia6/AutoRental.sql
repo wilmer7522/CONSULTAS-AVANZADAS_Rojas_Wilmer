@@ -1070,7 +1070,7 @@ begin
 end //
 delimiter ;
 
-	call actualizar_Sucursal(1, 2);
+	call actualizar_Sucursal(102, 2);
     
 select * from empleados;
 
@@ -1089,8 +1089,18 @@ select * from sucursales;
 select * from alquileres a
 join retraso r on a.id = r.id_alquiler;
 
+-- 8 agregar empleado
+delimiter //
+create procedure agregar_Empleado(cedula_in varchar(45), nombre1_in varchar(45), nombre2_in varchar(45), apellido1_in varchar(45),
+ apellido2_in varchar(45), direccion_in varchar(45), ciudad_residencia_in varchar(45), celular_in varchar(45), correo_in varchar(45), id_sucursal_in int)
+ begin
+    insert into empleados (cedula, nombre1, nombre2, apellido1, apellido2, direccion, ciudad_residencia, celular, correo, id_sucursal) values (cedula_in, nombre1_in, nombre2_in, apellido1_in, apellido2_in, direccion_in, ciudad_residencia_in, celular_in, correo_in, id_sucursal_in );
+end //
+delimiter ;
 
-
-
-
-
+ call agregar_Empleado('1016811445', 'Yessica', 'Andrea', 'Perez', 'Machuca', 'Calle 18A #30-25', 'Bogotá', '3118530131', 'yesssica@gmail.com', 1);
+ select * from empleados;
+ 
+ -- 9 modificar telefono de cliente
+ 
+ 
